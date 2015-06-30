@@ -27,8 +27,7 @@ object MainForm: TMainForm
     Height = 13
     Anchors = [akLeft, akBottom]
     Caption = 
-      'Copyright '#169' 2006-2008 by Tomasz Trejderowski. Wszelkie prawa zas' +
-      'trze'#380'one!'
+      'Copyright '#169' 2006-2008 by Tomasz Trejderowski. All rights reserved'
   end
   object lblWeb: TLabel
     Left = 529
@@ -37,11 +36,10 @@ object MainForm: TMainForm
     Height = 13
     Cursor = crHandPoint
     Hint = 
-      'Strona WWW#Kliknij, aby otworzy'#263' stron'#281' internetow'#261' autora tego ' +
-      'programu.'
+      'Click to open author website'
     Alignment = taRightJustify
     Anchors = [akLeft, akRight, akBottom]
-    Caption = 'http://www.trejderowski.pl/'
+    Caption = 'http://www.gaman.pl/'
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clBlue
     Font.Height = -11
@@ -62,7 +60,7 @@ object MainForm: TMainForm
     MultiLine = True
     TabOrder = 0
     object tsTree: TTabSheet
-      Caption = 'Drzewo folder'#243'w i plik'#243'w'
+      Caption = 'Tree of folders and files'
       DesignSize = (
         521
         435)
@@ -91,9 +89,8 @@ object MainForm: TMainForm
         Width = 98
         Height = 25
         Hint = 
-          'Eksploruj folder#Kliknij, aby eksplorowa'#263' zawarto'#347#263' tego folderu' +
-          ' (systemowe okno Eksplorator Windows).'
-        Caption = 'Eksploruj folder'
+          'Click to explore this folder in Windows Explorer'
+        Caption = 'Explore folder'
         Enabled = False
         ParentShowHint = False
         ShowHint = True
@@ -106,9 +103,8 @@ object MainForm: TMainForm
         Width = 98
         Height = 25
         Hint = 
-          'Otw'#243'rz folder#Kliknij, aby otworzy'#263' zawarto'#347#263' tego folderu (syst' +
-          'emowe okno M'#243'j komputer).'
-        Caption = 'Otw'#243'rz folder'
+          'Click to open this folder in Windows Explorer'
+        Caption = 'Open folder'
         Enabled = False
         ParentShowHint = False
         ShowHint = True
@@ -121,9 +117,9 @@ object MainForm: TMainForm
         Width = 98
         Height = 25
         Hint = 
-          'Usu'#324' plik#Kliknij, aby usun'#261#263' zaznaczony plik. Uwaga! Usuwanie o' +
-          'dbywa si'#281' BEZ kosza! Tej operacji NIE MO'#379'NA cofn'#261#263'!'
-        Caption = 'Usu'#324' plik'
+          'Click to delete selected file. WARNING! This operation IS NOT using Recycle' +
+          'Bin, but permanently deletes file instantly! THERE IS NO GOING BACK!'
+        Caption = 'Delete file'
         Enabled = False
         ParentShowHint = False
         ShowHint = True
@@ -135,8 +131,8 @@ object MainForm: TMainForm
         Top = 408
         Width = 98
         Height = 25
-        Hint = 'Zmie'#324' nazw'#281' pliku#Kliknij, aby zmieni'#263' nazw'#281' zaznaczonego pliku.'
-        Caption = 'Zmie'#324' nazw'#281' pliku'
+        Hint = 'Click to change name of selected file'
+        Caption = 'Rename'
         Enabled = False
         ParentShowHint = False
         ShowHint = True
@@ -149,9 +145,8 @@ object MainForm: TMainForm
         Width = 98
         Height = 25
         Hint = 
-          'Uruchom plik#Kliknij, aby uruchomi'#263' wskazany plik w programie sk' +
-          'ojarzonym z jego typem.'
-        Caption = 'Uruchom plik'
+          'Click to run program selected to open this type of files'
+        Caption = 'Execute file'
         Enabled = False
         ParentShowHint = False
         ShowHint = True
@@ -168,7 +163,7 @@ object MainForm: TMainForm
     Alignment = taLeftJustify
     Anchors = [akLeft, akRight, akBottom]
     BevelOuter = bvLowered
-    Caption = ' Gotowy...'
+    Caption = ' Ready...'
     TabOrder = 5
   end
   object gbStatistics: TGroupBox
@@ -177,7 +172,7 @@ object MainForm: TMainForm
     Width = 140
     Height = 68
     Anchors = [akRight, akBottom]
-    Caption = ' Zawarto'#347#263' drzewa '
+    Caption = ' Tree content '
     Color = clBtnFace
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clWindowText
@@ -192,7 +187,7 @@ object MainForm: TMainForm
       Top = 16
       Width = 59
       Height = 13
-      Caption = '0 folder'#243'w'
+      Caption = '0 folders'
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -205,7 +200,7 @@ object MainForm: TMainForm
       Top = 32
       Width = 46
       Height = 13
-      Caption = '0 plik'#243'w'
+      Caption = '0 files'
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -233,7 +228,7 @@ object MainForm: TMainForm
     Width = 140
     Height = 177
     Anchors = [akTop, akRight]
-    Caption = ' Narz'#281'dzia drzewa '
+    Caption = ' Tree tools '
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -247,10 +242,9 @@ object MainForm: TMainForm
       Width = 124
       Height = 25
       Hint = 
-        'Rozwi'#324' ca'#322'e drzewo#Kliknij, aby rozwin'#261#263' wszystkie ga'#322#281'zie drzew' +
-        'a. Uwaga! Mo'#380'e potrwa'#263' nawet kilkadziesi'#261't sekund i nie mo'#380'e by'#263 +
-        ' przerwane!'
-      Caption = 'Rozwi'#324' ca'#322'e drzewo'
+        'Click to expand all nodes in current tree. WARNING! This operation can take even dozens' +
+        'of seconds and there is not way to interrupt it!'
+      Caption = 'Expand entire tree'
       Enabled = False
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -269,10 +263,9 @@ object MainForm: TMainForm
       Width = 124
       Height = 25
       Hint = 
-        'Zwi'#324' ca'#322'e drzewo#Kliknij, aby zwin'#261#263' wszystkie ga'#322#281'zie drzewa. U' +
-        'waga! Mo'#380'e potrwa'#263' nawet kilkadziesi'#261't sekund i nie mo'#380'e by'#263' prz' +
-        'erwane!'
-      Caption = 'Zwi'#324' ca'#322'e drzewo'
+        'Click to collapse all nodes in current tree. WARNING! This operation can take even dozens' +
+        'of seconds and there is not way to interrupt it!'
+      Caption = 'Collapse entire tree'
       Enabled = False
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -290,8 +283,8 @@ object MainForm: TMainForm
       Top = 144
       Width = 124
       Height = 25
-      Hint = 'Wyczy'#347#263' drzewo#Kliknij, aby wyczy'#347'ci'#263' ca'#322#261' struktur'#281' drzewa.'
-      Caption = 'Wyczy'#347#263' drzewo'
+      Hint = 'Clear entire tree (remove all nodes)'
+      Caption = 'Cleare tree'
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -308,8 +301,8 @@ object MainForm: TMainForm
       Top = 80
       Width = 124
       Height = 25
-      Hint = 'Kopiuj zawarto'#347#263'#Kopiuje zawarto'#347#263' drzewa do Schowka'
-      Caption = 'Kopiuj zawarto'#347#263
+      Hint = 'Copy entire tree structure and contents to clipboard'
+      Caption = 'Copy contents'
       Enabled = False
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -327,8 +320,8 @@ object MainForm: TMainForm
       Top = 112
       Width = 124
       Height = 25
-      Hint = 'Zapisz zawarto'#347#263'#Zapisuje zawarto'#347#263' drzewa do pliku tekstowego'
-      Caption = 'Zapisz zawarto'#347#263
+      Hint = 'Save entire tree structure and contents to file'
+      Caption = 'Save to file'
       Enabled = False
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -348,7 +341,7 @@ object MainForm: TMainForm
     Width = 140
     Height = 86
     Anchors = [akRight, akBottom]
-    Caption = ' Parametry pracy '
+    Caption = ' Parameters '
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -365,9 +358,8 @@ object MainForm: TMainForm
       Width = 122
       Height = 17
       Hint = 
-        'Dodawaj tylko foldery#Zaznacz, aby drzewo zawiera'#322'o tylko folder' +
-        'y'
-      Caption = 'Dodawaj tylko foldery'
+        'Add only folders to tree when refreshing'
+      Caption = 'Add only folders'
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -385,9 +377,8 @@ object MainForm: TMainForm
       Width = 110
       Height = 17
       Hint = 
-        'Zliczaj pliki i foldery#Okre'#347'la, czy s'#261' zliczane pliki i foldery' +
-        ' w drzewie, a obliczone warto'#347'ci - wy'#347'wietlane.'
-      Caption = 'Zliczaj pliki i foldery'
+        'Count files and folders and display results in tree'
+      Caption = 'Count files and folders'
       Checked = True
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -406,7 +397,7 @@ object MainForm: TMainForm
       Top = 48
       Width = 122
       Height = 17
-      Caption = 'Poka'#380' panel narz'#281'dzi'
+      Caption = 'Display tools panel'
       Checked = True
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -424,11 +415,9 @@ object MainForm: TMainForm
       Width = 118
       Height = 17
       Hint = 
-        #379#261'daj potwierdzenia#Okre'#347'la, czy s'#261' wy'#347'wietlane potwierdzenia pr' +
-        'zed uruchomieniem wybranego pliku, usuni'#281'ciem go lub zmian'#261' jego' +
-        ' nazwy.'
+        'Require confirmation before deleting a file'
       Anchors = [akRight, akBottom]
-      Caption = #379#261'daj potwierdzenia'
+      Caption = 'Require confirmation'
       Checked = True
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -449,7 +438,7 @@ object MainForm: TMainForm
     Width = 140
     Height = 113
     Anchors = [akTop, akRight]
-    Caption = ' Polecenia programu '
+    Caption = ' Program tools '
     Font.Charset = EASTEUROPE_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -463,9 +452,8 @@ object MainForm: TMainForm
       Width = 124
       Height = 25
       Hint = 
-        'Wybierz folder...#Kliknij, aby wybra'#263' folder i utworzy'#263' drzewo j' +
-        'ego zawarto'#347'ci.'
-      Caption = 'Wybierz folder...'
+        'Click to select a folder and build entire tree of its contents'
+      Caption = 'Select folder...'
       Default = True
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -484,10 +472,9 @@ object MainForm: TMainForm
       Width = 124
       Height = 25
       Hint = 
-        'Przerwij generowanie#Przerywa aktualny proces generowania drzewa' +
-        ' plik'#243'w i folder'#243'w.'
+        'Click to stop current tree generation process'
       Cancel = True
-      Caption = 'Przerwij generowanie'
+      Caption = 'STOP generation'
       Enabled = False
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -506,9 +493,8 @@ object MainForm: TMainForm
       Width = 124
       Height = 25
       Hint = 
-        'Od'#347'wie'#380' drzewo#Kliknij, aby ponownie narysowa'#263' drzewo dla aktual' +
-        'nie wybranego folderu'
-      Caption = 'Od'#347'wie'#380' drzewo'
+        'Click to refresh tree of files and folders'
+      Caption = 'Refresh tree'
       Enabled = False
       Font.Charset = EASTEUROPE_CHARSET
       Font.Color = clWindowText
@@ -523,7 +509,7 @@ object MainForm: TMainForm
     end
   end
   object fdFolder: TFolderDialog
-    Title = 'Wybierz folder'
+    Title = 'Select folder'
     BrowsType = btNone
     SpecialFolder = sfNone
     Left = 24
@@ -938,7 +924,7 @@ object MainForm: TMainForm
   end
   object sdDialog: TSaveDialog
     DefaultExt = '*.txt'
-    Filter = 'Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki (*.*)|*.*'
+    Filter = 'Text Files (*.txt)|*.txt|All Files (*.*)|*.*'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofNoReadOnlyReturn, ofEnableSizing]
     Left = 152
     Top = 40

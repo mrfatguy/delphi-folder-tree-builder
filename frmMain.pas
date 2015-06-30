@@ -46,7 +46,7 @@ type
     function GetFullPathForSelectedNode(): String;
     function GetFileSize(FileName: String): Int64;
     function GetSizeWithProperPrefix(Size: Int64): String;
-    function ListujKatalogi(tnRodzic: TTreeNode; strSciezka: string): Int64;
+    function ListujKatalogi(tnRodzic: TTreeNode; strPath: string): Int64;
     function MakePolishEnding(Value: Integer; sText1, sText2, sText5, sAdd1, sAdd2, sAdd5: String): String;
 
     procedure DrawTree(Folder: String);
@@ -130,7 +130,6 @@ end;
 
 function TMainForm.GetSizeWithProperPrefix(Size: Int64): String;
 begin
-        //Size := Abs(Size);
         Result := IntToStr(Size) + ' B';
 
         if Size > 1024 then Result := IntToStr(Round(Size / 1024)) + ' kB';
@@ -138,7 +137,7 @@ begin
         if Size > 1073741824 then Result := FloatToStrF(Size / 1073741824, ffFixed, 7, 2) + ' GB';
 end;
 
-function TMainForm.ListujKatalogi(tnRodzic: TTreeNode; strSciezka: string): Int64;
+function TMainForm.ListujKatalogi(tnRodzic: TTreeNode; strPath: string): Int64;
 var
         sr: TSearchRec;
         iSize, iWynik: Integer;
@@ -146,13 +145,13 @@ var
         sSize: String;
         DirSize, TotalSize: Int64;
 begin
-        pnlStatus.Caption := ' Dodawanie: ' + strSciezka;
+        pnlStatus.Caption := ' Adding: ' + strPath;
         Application.ProcessMessages;
 
         TotalSize := 0;
 
-        strSciezka := IncludeTrailingBackslash(strSciezka);
-        iWynik := FindFirst(strSciezka + '*.*', faAnyFile, sr);
+        strPath := IncludeTrailingBackslash(strPath);
+        iWynik := FindFirst(strPath + '*.*', faAnyFile, sr);
 
         while iWynik = 0 do
         begin
@@ -162,8 +161,8 @@ begin
 
                         if not chbFoldersOnly.Checked then
                         begin
-                                pnlFilesCount.Caption := MakePolishEnding(fiCount, 'plik', 'pliki', 'plików', '', '', '');
-                                pnlFolderCount.Caption := MakePolishEnding(foCount, 'folder', 'foldery', 'folderów', '', '', '');
+                                pnlFilesCount.Caption := MakePolishEnding(fiCount, 'file', 'files', 'files', '', '', '');
+                                pnlFolderCount.Caption := MakePolishEnding(foCount, 'folder', 'folders', 'folders', '', '', '');
                                 pnlSizeMB.Caption := IntToStr(Round(siCount / 1048576)) + ' MB (' + FloatToStrF(siCount / 1073741824, ffFixed, 7, 2) + ' GB)';
                         end;
 
@@ -178,7 +177,7 @@ begin
                         tnDziecko.SelectedIndex := 0;
                         Inc(foCount);
 
-                        DirSize := ListujKatalogi(tnDziecko, strSciezka + sr.Name + '\');
+                        DirSize := ListujKatalogi(tnDziecko, strPath + sr.Name + '\');
                         Inc(TotalSize, DirSize);
 
                         if chbCount.Checked then
@@ -191,7 +190,7 @@ begin
                 begin
                         if (sr.Name <> '.') and (sr.Name <> '..') and (chbFoldersOnly.Checked <> True) then
                         begin
-                                iSize := GetFileSize(strSciezka + sr.Name);
+                                iSize := GetFileSize(strPath + sr.Name);
                                 sSize := GetSizeWithProperPrefix(iSize);
 
                                 Inc(TotalSize, iSize);
@@ -216,8 +215,8 @@ begin
 
         if not chbFoldersOnly.Checked then
         begin
-                pnlFilesCount.Caption := MakePolishEnding(fiCount, 'plik', 'pliki', 'plików', '', '', '');
-                pnlFolderCount.Caption := MakePolishEnding(foCount, 'folder', 'foldery', 'folderów', '', '', '');
+                pnlFilesCount.Caption := MakePolishEnding(fiCount, 'file', 'files', 'files', '', '', '');
+                pnlFolderCount.Caption := MakePolishEnding(foCount, 'folder', 'folders', 'folders', '', '', '');
                 pnlSizeMB.Caption := IntToStr(Round(siCount / 1048576)) + ' MB (' + FloatToStrF(siCount / 1073741824, ffFixed, 7, 2) + ' GB)';
 
                 Application.ProcessMessages;
@@ -310,7 +309,7 @@ begin
         ChangeElementsEnableState(True);
         btnCancel.Enabled := False;
 
-        pnlStatus.Caption := ' Gotowy. Czas operacji: ' + IntToStr(GetTickCount() - Start) + ' ms.';
+        pnlStatus.Caption := ' Ready! Processing time: ' + IntToStr(GetTickCount() - Start) + ' ms.';
         Screen.Cursor := crDefault;
 end;
 
@@ -334,14 +333,14 @@ begin
 
         ChangeElementsEnableState(False);
         
-        pnlStatus.Caption := ' Rozwijanie wszystkich ga³êzi drzewa...';
+        pnlStatus.Caption := ' Expanding all tree nodes...';
         Application.ProcessMessages;
 
         tvShell.FullExpand;
 
         ChangeElementsEnableState(True);
 
-        pnlStatus.Caption := ' Gotowy. Czas operacji: ' + IntToStr(GetTickCount() - Start) + ' ms.';
+        pnlStatus.Caption := ' Ready! Processing time: ' + IntToStr(GetTickCount() - Start) + ' ms.';
         Screen.Cursor := crDefault;
 end;
 
@@ -354,7 +353,7 @@ begin
         Screen.Cursor := crHourglass;
         Start := GetTickCount();
         
-        pnlStatus.Caption := ' Zwijanie wszystkich ga³êzi drzewa...';
+        pnlStatus.Caption := ' Collapsing all tree nodes...';
         Application.ProcessMessages;
 
         ChangeElementsEnableState(False);
@@ -365,22 +364,22 @@ begin
 
         ChangeElementsEnableState(True);
 
-        pnlStatus.Caption := ' Gotowy. Czas operacji: ' + IntToStr(GetTickCount() - Start) + ' ms.';
+        pnlStatus.Caption := ' Ready! Processing time: ' + IntToStr(GetTickCount() - Start) + ' ms.';
         Screen.Cursor := crDefault;
 end;
 
 procedure TMainForm.btnClearClick(Sender: TObject);
 begin
         tvShell.Items.Clear;
-        pnlStatus.Caption := ' Gotowy.';
+        pnlStatus.Caption := ' Ready! ';
 
         fiCount := 0;
         foCount := 0;
         siCount := 0;
         if not chbFoldersOnly.Checked then
         begin
-                pnlFilesCount.Caption := '0 plików';
-                pnlFolderCount.Caption := '0 folderów';
+                pnlFilesCount.Caption := '0 files';
+                pnlFolderCount.Caption := '0 folders';
                 pnlSizeMB.Caption := IntToStr(Round(siCount / 1048576)) + ' MB (' + FloatToStrF(siCount / 1073741824, ffFixed, 7, 2) + ' GB)';
         end;
 
@@ -396,8 +395,8 @@ begin
 
         if (gbStatistics.Visible) and (not chbFoldersOnly.Checked) then
         begin
-                pnlFilesCount.Caption := '0 plików';
-                pnlFolderCount.Caption := '0 folderów';
+                pnlFilesCount.Caption := '0 files';
+                pnlFolderCount.Caption := '0 folders';
                 pnlSizeMB.Caption := IntToStr(Round(siCount / 1048576)) + ' MB (' + FloatToStrF(siCount / 1073741824, ffFixed, 7, 2) + ' GB)';
         end;
 end;
@@ -414,12 +413,12 @@ end;
 
 procedure TMainForm.chbAskBeforeRunClick(Sender: TObject);
 begin
-        if not chbAskBeforeRun.Checked then if Application.MessageBox('Gdy pole to jest odznaczone, przypadkowe naciœniêcie klawisza Delete spowoduje usuniêcie pliku bez potwierdzenia!'+chr(13)+'(Uwaga! Pliki s¹ usuwane BEZ wykorzystania Kosza - jest to operacja NIEODWRACALNA!)'+chr(13)+''+chr(13)+'Czy na pewno wy³¹czyæ ostrze¿enia?','Ostrze¿enie!',MB_YESNO+MB_ICONWARNING+MB_DEFBUTTON2) = ID_NO then chbAskBeforeRun.Checked := True;
+        if not chbAskBeforeRun.Checked then if Application.MessageBox('When this checkbox is unchecked, any accidental press on "Delete" button will delete file without confirmation!'+chr(13)+'(Warning! All files are deleted WITHOUT using Recycle Bin -- this operation in permanent!)'+chr(13)+''+chr(13)+'Are you sure, you want to disable confirmations?','Warning!',MB_YESNO+MB_ICONWARNING+MB_DEFBUTTON2) = ID_NO then chbAskBeforeRun.Checked := True;
 end;
 
 procedure TMainForm.lblWebClick(Sender: TObject);
 begin
-        ShellExecute(Handle,'open','http://www.trejderowski.pl/','','',SW_SHOW);
+        ShellExecute(Handle,'open','http://www.gaman.pl/','','',SW_SHOW);
 end;
 
 procedure TMainForm.btnRefreshClick(Sender: TObject);
@@ -457,7 +456,7 @@ begin
         Screen.Cursor := crHourglass;
         Start := GetTickCount();
 
-        pnlStatus.Caption := ' Kopiowanie zawartoœci drzewa do Schowka...';
+        pnlStatus.Caption := ' Copying tree contents to clipboard...';
         Application.ProcessMessages;
 
         ChangeElementsEnableState(False);
@@ -476,12 +475,12 @@ begin
 
                 DeleteFile('temp.txt');
         except
-                Application.MessageBox('Aby wykonaæ t¹ operacjê, program musi zapisaæ (a nastêpnie usun¹æ) plik tymczasowy. Jednak¿e, podczas próby zapisu pliku tymczasowego wyst¹pi³ b³¹d i operacja zosta³a przerwana.'+chr(13)+''+chr(13)+'SprawdŸ, czy dysk (lub folder), z którego zosta³ uruchomiony program FaFTB nie jest chroniony przed zapisem i ewentualnie spróbuj ponownie.','B³¹d!',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
+                Application.MessageBox('To complete this operation a temporary file must be created (and then deleted). However, during attempt of writing temporary file an error was occured and entire operation was rolled back.'+chr(13)+''+chr(13)+'Check, if folder, from where your ran this program is not write-protected and repeat this operation','Error!',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
         end;
 
         ChangeElementsEnableState(True);
 
-        pnlStatus.Caption := ' Gotowy. Czas operacji: ' + IntToStr(GetTickCount() - Start) + ' ms.';
+        pnlStatus.Caption := ' Ready! Processing time: ' + IntToStr(GetTickCount() - Start) + ' ms.';
         Screen.Cursor := crDefault;
 end;
 
@@ -494,7 +493,7 @@ begin
         Screen.Cursor := crHourglass;
         Start := GetTickCount();
 
-        pnlStatus.Caption := ' Zapisywanie zawartoœci drzewa do pliku tekstowego...';
+        pnlStatus.Caption := ' Saving tree contents to a file...';
         Application.ProcessMessages;
 
         ChangeElementsEnableState(False);
@@ -502,12 +501,12 @@ begin
         try
                 tvShell.SaveToFile(sdDialog.FileName);
         except
-                Application.MessageBox('Wyst¹pi³ b³¹d przy próbie zapisu zawartoœci drzewa do pliku tekstowego. Byæ mo¿e docelowy napêd jest zabezpieczony przed zapisem?','B³¹d!',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
+                Application.MessageBox('There was an error when writing text file! Check, if destination folder is not write-protected?','Error!',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
         end;
 
         ChangeElementsEnableState(True);
 
-        pnlStatus.Caption := ' Gotowy. Czas operacji: ' + IntToStr(GetTickCount() - Start) + ' ms.';
+        pnlStatus.Caption := ' Ready! Processing time: ' + IntToStr(GetTickCount() - Start) + ' ms.';
         Screen.Cursor := crDefault;
 end;
 
@@ -520,11 +519,11 @@ begin
 
         sPath := ExtractFilePath(GetFullPathForSelectedNode());
         sSource := ExtractFileName(GetFullPathForSelectedNode());
-        sDest := InputBox('Zmiana nazwy', 'Podaj now¹ nazwê dla wskazanego pliku:', sSource);
+        sDest := InputBox('Rename', 'Enter new name for selected file:', sSource);
 
         if sDest = sSource then exit;
 
-        if chbAskBeforeRun.Checked then if Application.MessageBox(PChar('Obecna nazwa: ' + sSource + chr(13) + 'Nowa nazwa: ' + sDest + chr(13) + chr(13) + 'Folder: ' + sPath + chr(13) + chr(13) + 'Czy na pewno zmieniæ nazwê pliku?'),'Zmiana nazwy pliku...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
+        if chbAskBeforeRun.Checked then if Application.MessageBox(PChar('Current name: ' + sSource + chr(13) + 'New name: ' + sDest + chr(13) + chr(13) + 'Folder: ' + sPath + chr(13) + chr(13) + 'Are you sure, you want to rename this file?'),'Rename...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
 
         if RenameFile(sPath + sSource, sPath + sDest) then
         begin
@@ -533,7 +532,7 @@ begin
 
                 tvShell.Selected.Text := sDest + ' (' + sSize + ')';
         end
-        else Application.MessageBox('Zmiana nazwy pliku nie powiod³a siê!','B³¹d...',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
+        else Application.MessageBox('Rename of selected file failed!','Error...',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1);
 
         tvShell.SetFocus;
 end;
@@ -551,13 +550,13 @@ begin
         begin
                 if ExtractFileExt(sPath) = '.exe' then
                 begin
-                        if Application.MessageBox(PChar('Czy uruchomiæ program:'+chr(13)+sPath+chr(13)+chr(13)+'Niektóre pliki wykonywalne mog¹ zawieraæ wirusy lub stanowiæ inne potencjalne zagro¿enie dla twojego komputera!'),'Uruchomienie pliku...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
+                        if Application.MessageBox(PChar('Do you really want to run program:'+chr(13)+sPath+chr(13)+chr(13)+'Certain files may contain viruses or become in any other way potentially dangerous to your computer!'),'Execute program...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
 
                         ShellExecute(Handle, 'open', PChar(sPath), '', '', SW_SHOW);
                 end
                 else
                 begin
-                        if Application.MessageBox(PChar('Czy uruchomiæ plik:'+chr(13)+sPath+chr(13)+chr(13)+'Uruchomiony zostanie program skojarzony w systemie z typem wybranego pliku.'),'Uruchomienie pliku...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
+                        if Application.MessageBox(PChar('Do you really want to execute this file:'+chr(13)+sPath+chr(13)+chr(13)+'A program set in Windows to handle this kind of files will be launched in order to exectute selected files'),'Execite file...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
 
                         ShellExecute(Handle, 'open', PChar(sPath), '', '', SW_SHOW);
                 end;
@@ -577,32 +576,18 @@ var
         iResult, iLast, iLast_Two: Integer;
         sBeginAdd, sBaseText, sValue: String;
 begin
-     //Parametry wejœciowe
-     //Value - wartoœæ, na podstawie której jest tworzone polskie dope³nienie.
-     //sText1 - tekst dla przypadku pierwszego (patrz poni¿ej), np. "sekunda" ("1 sekunda", st¹d nazwa zmiennej).
-     //sText2 - tekst dla przypadku drugiego (patrz poni¿ej), np. "sekundy" ("2 sekundy", st¹d nazwa zmiennej).
-     //sText5 - tekst dla przypadku trzeciego (patrz poni¿ej), np. "sekund" ("5 sekund", st¹d nazwa zmiennej).
-     //sAdd1 - przedrostek dla przypadku pierwszego (patrz poni¿ej), np. "pozosta³a" ("pozosta³a 1 sekunda", st¹d nazwa zmiennej).
-     //sAdd2 - przedrostek dla przypadku drugiego (patrz poni¿ej), np. "pozosta³y" ("pozosta³y 2 sekundy", st¹d nazwa zmiennej).
-     //sAdd5 - przedrostek dla przypadku trzeciego (patrz poni¿ej), np. "pozosta³o" ("pozosta³o 5 sekund", st¹d nazwa zmiennej).
-     //
-     //Funkcja zwraca wartoœæ 1-3 w zale¿noœci, od tego jakie dope³nienie powinno byæ:
-     //1 - 'a': tylko dla jednoœci, np. "1 sekunda", "1 minuta", "1 godzina".
-     //2 - 'y': dla wartoœci jednoœci 2-4, np. "2 sekundy", "22 minuty", "194 godziny" (bez liczb 11-19),
-     //3 - '[puste]': dla jednoœci (np. "21 sekund"), liczb 11-19 (np. "14 minut", "217 godzin") i wszystkich pozosta³ych.
-
-     iResult := 3; //Domyœlnie 3, bo najwiêcej liczb spe³nia trzeci warunek
+     iResult := 3;
 
      sValue := IntToStr(Value);
 
-     iLast := StrToIntDef(Copy(sValue, Length(sValue), 1), 0); //Ostatnia cyfra
-     iLast_Two := StrToIntDef(Copy(sValue, Length(sValue) - 1, 2), 0); //Ostatnie dwie cyfry
+     iLast := StrToIntDef(Copy(sValue, Length(sValue), 1), 0);
+     iLast_Two := StrToIntDef(Copy(sValue, Length(sValue) - 1, 2), 0);
 
-     if ((iLast > 1) and (iLast < 5)) then iResult := 2; //Liczby z 2-4 na pozycji jednoœci - drugi warunek
+     if ((iLast > 1) and (iLast < 5)) then iResult := 2;
 
-     if ((iLast_Two > 10) and (iLast_Two < 20)) then iResult := 3; //Wymuszenie warunku 3 dla liczb maj¹cych 11-19 na pozycji dziesi¹tek
+     if ((iLast_Two > 10) and (iLast_Two < 20)) then iResult := 3;
 
-     if (Value = 1) then iResult := 1; //Jedyny taki przypadek - warunek pierwszy spe³nia tylko cyfra 1.
+     if (Value = 1) then iResult := 1;
 
      sBeginAdd := '';
 
@@ -650,10 +635,10 @@ begin
 
         sFile := GetFullPathForSelectedNode();
 
-        if chbAskBeforeRun.Checked then if Application.MessageBox(PChar('Uwaga! Poni¿szy plik zostanie TRWALE usuniêty!' + chr(13) + chr(13) + sFile + chr(13) + chr(13) + 'Czy na pewno usun¹æ ten plik?' + chr(13) + '(Uwaga! Pliki s¹ usuwane BEZ wykorzystania Kosza - jest to operacja NIEODWRACALNA!)'),'Usuwanie pliku...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
+        if chbAskBeforeRun.Checked then if Application.MessageBox(PChar('Warning! This file will be PERMANENTLY deleted:' + chr(13) + chr(13) + sFile + chr(13) + chr(13) + 'Are you really, REALLY sure, you want to delete this file?' + chr(13) + '(files are deleted WITHOUT using Windows Recycle Bin and this operation CAN NOT BE UNDONE!)'),'Delete file...',MB_YESNO+MB_ICONQUESTION+MB_DEFBUTTON2) = ID_NO then exit;
 
         if not DeleteFile(sFile) then
-                Application.MessageBox('Usuwanie pliku nie powiod³o siê!','B³¹d...',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1)
+                Application.MessageBox('File deletion failed!','B³¹d...',MB_OK+MB_ICONWARNING+MB_DEFBUTTON1)
         else
                 tvShell.Selected.Delete;
 
