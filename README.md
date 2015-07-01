@@ -2,7 +2,9 @@
 
 Simple tool (with sources), written in Delphi tool to build entire tree of your folders and subfolders.
 
-You can use this project as either functional tool to traverse your entire folders structure, count files and get total file size. Or, you can use parts of source code to implement multi-folder recursive searching algorithm in your own application.
+You can use this project as either a tool, to traverse your entire folders structure, count files and get total file size. Or you can its  source code to implement multi-folder recursive searching algorithm in your own application. Keep in mind, that both comments and names (variables, object) are in Polish. I didn't find enough time and determination to translated them as well. I only tranlsated strings.
+
+**You're only getting project's source code and nothing else! You need to find all missing Delphi components by yourself.**
 
 ### Status
 
